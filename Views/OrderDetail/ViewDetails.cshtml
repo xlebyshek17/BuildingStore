@@ -1,0 +1,94 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.OrderDetail>
+
+@{
+    ViewData["Title"] = "Order information";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="text-uppercase">Order information</h3>
+    </div>
+    <div class="card-body">
+        @{ var order = Model.Last();}
+
+        @*Вывод инфы про продукты*@
+        @foreach (OrderDetail ord in Model)
+        {
+            <div class="row">
+                <div class="col-sm-3 ">
+                    <img src="~/images/@ord.OrderItem.Product.Image" class="img-thumbnail" height="150" width="150">
+                </div>
+                <div class="col-sm-3">
+                    <h3>Title: <strong>@ord.OrderItem.Product.Name</strong></h3>
+                    <p>Qty: <strong>@ord.OrderItem.Qty</strong></p>
+                    <p>Price: <strong>@ord.OrderItem.Product.Price $</strong></p>
+                </div>
+            </div>
+            <hr />
+        }
+
+        @*ВЫвод инфы о заказчике*@
+        <dl class="row">
+                <dt class="col-sm-2">
+                    <label>Order №</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.Order.ID</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>User name</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.Order.User.Email</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Customer name</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.Order.Name @order.Order.Surname</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Phone</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.Order.Phone</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Address</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.Order.Address</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Date</label>
+                </dt>
+                
+                <dd class="col-sm-10">
+                    <p>@order.Date.ToString("dd/MM/yyyy")</p>
+
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Total price</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.TotalPrice $</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Buying type</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.BuyingType</p>
+                </dd>
+                <dt class="col-sm-2">
+                    <label>Comments</label>
+                </dt>
+                <dd class="col-sm-10">
+                    <p>@order.Comments</p>
+                </dd>
+            </dl>
+
+        <div>
+            <a class="btn btn-outline-info" asp-action="ViewOrderDetails" asp-controller="OrderDetail">Back to orders</a>
+        </div>
+    </div>
+</div>

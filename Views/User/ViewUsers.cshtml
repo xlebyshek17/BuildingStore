@@ -1,0 +1,45 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.User>
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-dark" role="button" asp-action="Logout" asp-controller="Account">Logout</a>
+</div>
+
+<h2 class="text-center">@ViewData["Title"]</h2><br />
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Category" asp-action="ViewCategory">Categories</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Product" asp-action="ViewProducts">Products</a></li>
+        <li class="breadcrumb-item"><a asp-controller="OrderDetail" asp-action="ViewOrderDetails">Orders</a></li>
+        <li class="breadcrumb-item" aria-current="page">Users</li>
+    </ol>
+</nav>
+
+<blockquote class="blockquote text-center">
+    <table class="table table-bordered table-hover table-sm">
+        <caption>List of users</caption>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Email</th>
+                <th scope="col">Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (item.Email != "Admin")
+                {
+                    <tr>
+                        <td>@item.ID</td>
+                        <td>@item.Email</td>
+                        <td>@item.Password</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</blockquote>

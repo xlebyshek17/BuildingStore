@@ -1,0 +1,13 @@
+﻿@{
+    ViewData["Title"] = "Thank you";
+}
+
+<div class="text-center" >
+    <br /><br /><br /><br />
+    <h1 class="text-uppercase">Thank you for ordering!</h1>
+    <br />
+    <hr />
+    <a class="btn btn-success" asp-action="ViewCatalog" asp-controller="Product" asp-route-userID="@ViewData["UserID"]" asp-route-userEmail="@ViewData["UserEmail"]">Back to catalog</a>
+</div>
+
+

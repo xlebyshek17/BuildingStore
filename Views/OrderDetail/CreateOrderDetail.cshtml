@@ -1,0 +1,117 @@
+﻿@model BuildingStore.Models.Entity.OrderDetail
+@inject BuildingStore.Models.Repositories.IRepository<OrderItem> orderItems
+@inject BuildingStore.Models.Repositories.IRepository<Order> orders
+
+@{
+    ViewData["Title"] = "Ordering";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="text-uppercase">ordering</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="CreateOrderDetail" asp-controller="OrderDetail">
+            <h3>Products</h3><br />
+            @{decimal totalPrice = 0; List<OrderItem> items = new List<OrderItem>();}
+            @foreach (var order in orderItems.GetList().Where(o => o.UserID == (int)ViewData["UserID"] && o.Status == false))
+            {
+                <div class="row">
+                    <div class="col-sm-3 ">
+                        <img src="~/images/@order.Product.Image" class="img-thumbnail" height="150" width="150">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="hidden" asp-for="OrderItemID" value="@order.ID" />
+                        <input type="hidden" asp-for="OrderID" value="@ViewData["OrderID"]" />
+                        <h3>Title: <strong>@order.Product.Name</strong></h3>
+                        <p>Qty: <strong>@order.Qty</strong></p>
+                        <p>Price: <strong>@order.Product.Price $</strong></p>
+                        <hr />
+                        @{decimal price = @order.Product.Price * @order.Qty; totalPrice += price;}
+                        <p>Total product price: <strong>@price $</strong></p>
+                    </div>
+                    @{ OrderItem item = order; items.Add(item); }
+                </div>
+                <hr />
+            }
+            @for (int i = 0; i < items.Count; i++)
+            {
+                <input type="hidden" asp-for="OrderItems[i].ID" value="@items[i].ID" />
+                <input type="hidden" asp-for="OrderItems[i].ProductID" value="@items[i].ProductID" />
+                <input type="hidden" asp-for="OrderItems[i].UserID" value="@items[i].UserID" />
+                <input type="hidden" asp-for="OrderItems[i].Qty" value="@items[i].Qty" />
+                <input type="hidden" asp-for="OrderItems[i].Status" value="@items[i].Status" />
+            }
+
+            <div class="row">
+                <div class="col-sm-3 text-right">
+                    <label asp-for="TotalPrice" class="control-label">Total price</label>
+                </div>
+                <div class="col-sm-3">
+                    <input type="hidden" asp-for="TotalPrice" value="@totalPrice" />
+                    <p><strong>@totalPrice</strong> $</p>
+                </div>
+            </div>
+            <hr />
+            <h3>Order details</h3><br />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <p>Name: <strong>@orders.GetList().FirstOrDefault(o => o.ID == (int)@ViewData["OrderID"]).Name</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <p>Surname: <strong>@orders.GetList().FirstOrDefault(o => o.ID == (int)@ViewData["OrderID"]).Surname</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <p>Phone: <strong>@orders.GetList().FirstOrDefault(o => o.ID == (int)@ViewData["OrderID"]).Phone</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <p>Address: <strong>@orders.GetList().FirstOrDefault(o => o.ID == (int)@ViewData["OrderID"]).Address</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="BuyingType" class="control-label">Buying type: </label>
+                        <div>
+                            <select name="BuyingType" class="form-control">
+                                <option>Card</option>
+                                <option>Cash</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="BuyingType" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Date" class="control-label"></label>
+                        <input type="date" asp-for="Date" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Comments" class="control-label"></label>
+                        <textarea asp-for="Comments" class="form-control"></textarea>
+                        <span asp-validation-for="Comments" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Confirm order" class="btn btn-outline-info" asp-route-userID="@ViewData["UserID"]" asp-route-userEmail="@ViewData["UserEmail"]" />
+            </div>
+        </form>
+    </div>
+</div>

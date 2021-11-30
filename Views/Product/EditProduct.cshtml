@@ -1,0 +1,85 @@
+﻿@model BuildingStore.ViewModels.ProductViewModel
+@inject BuildingStore.Models.Repositories.IRepository<Category> cat
+
+@{
+    ViewData["Title"] = "Edit product";
+}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="text-uppercase">Edit Product</h3>
+    </div>
+    <div class="card-body">
+        <form asp-action="EditProduct" asp-controller="Product" enctype="multipart/form-data">
+            <input type="hidden" asp-for="ID" />
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="CategoryID" class="control-label">Category</label>
+                        <div>
+                            <select name="CategoryID" asp-for="CategoryID" class="form-control">
+                                @foreach (var c in cat.GetList())
+                                {
+                                    <option value="@c.ID">@c.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <span asp-validation-for="CategoryID" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="ProductPicture" class="control-label"></label>
+                        <div class="custom-file">
+                            <input asp-for="ProductPicture" class="custom-file-input" type="file" />
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                        <span asp-validation-for="ProductPicture" class="text-danger"></span>
+                        <br /><br /><img src="~/images/@Model.ExistingImage" class="img-thumbnail" height="80" width="80" asp-append-version="true" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input type="text" asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label asp-for="Price" class="control-label">Price($)</label>
+                        <input type="number" asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-label"></label>
+                        <textarea asp-for="Description" class="form-control"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-outline-success"><i class="fa fa-pencil-alt"></i> Update</button>
+                <a asp-controller="Product" asp-action="ViewProducts" class="btn btn-outline-info"><i class="fas fa-fast-backward"></i> Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

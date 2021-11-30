@@ -1,0 +1,28 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.Order> 
+
+<table class="table table-bordered table-hover table-sm">
+    <caption>List of orders</caption>
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">UserID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Address</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ID</td>
+                <td>@item.User.Email</td>
+                <td>@item.Name</td>
+                <td>@item.Surname</td>
+                <td>@item.Phone</td>
+                <td>@item.Address</td>
+            </tr>
+        }
+    </tbody>
+</table>

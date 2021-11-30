@@ -1,0 +1,54 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.OrderDetail>
+
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-dark" role="button" asp-action="Logout" asp-controller="Account">Logout</a>
+</div>
+
+<h2 class="text-center">@ViewData["Title"]</h2><br />
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Category" asp-action="ViewCategory">Categories</a></li>
+        <li class="breadcrumb-item"><a asp-controller="Product" asp-action="ViewProducts">Products</a></li>
+        <li class="breadcrumb-item" aria-current="page">Orders</li>
+        <li class="breadcrumb-item"><a asp-controller="User" asp-action="ViewUsers">Users</a></li>
+    </ol>
+</nav>
+
+<blockquote class="blockquote text-center">
+    <table class="table table-bordered table-hover table-sm">
+        <caption>List of orders</caption>
+        <thead class="thead-dark">
+            <tr>
+                <th scopr="col">Order №</th>
+                <th scope="col">Customer name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Buying Type</th>
+                <th scope="col">Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        @{ List<int> orders = new List<int>();}
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if (!orders.Contains(item.OrderID))
+            {
+                <tr>
+                    <td><a asp-route-id="@item.OrderID" asp-action="ViewDetails" asp-controller="OrderDetail">@item.Order.ID</a></td>
+                    <td>@item.Order.Name @item.Order.Surname</td>
+                    <td>@item.TotalPrice $</td>
+                    <td>@item.BuyingType</td>
+                    <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                    <td><a class="btn btn-outline-info" asp-route-id="@item.OrderID" asp-action="ViewDetails" asp-controller="OrderDetail">more info</a></td>
+                </tr>
+                orders.Add(item.OrderID);
+            }
+        }
+    </tbody>
+    </table>
+</blockquote>

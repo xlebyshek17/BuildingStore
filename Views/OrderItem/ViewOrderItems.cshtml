@@ -1,0 +1,56 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.OrderItem>
+
+<br />
+<h3 class='text-center'>Your cart</h3>
+<br>
+@if (Model.Count() > 0)
+{
+    <div class='my-cart'>
+        <table class="table">
+            <tr>
+                <td class='text-center'><strong>Product</strong></td>
+                <td class='text-center'><strong>Qty</strong></td>
+                <td class='text-center'><strong>Price</strong></td>
+                <td class='text-center'></td>
+            </tr>
+            @{decimal totalPrice = 0; }
+            @foreach (OrderItem item in Model)
+            {
+                <tr>
+                    <td class="text-center">@item.Product.Name</td>
+                    <td class='text-center'>
+                        <form asp-action="ViewOrderItems" asp-controller="OrderItem" asp-route-id="@item.ProductID" asp-route-userID="@item.UserID" asp-route-email="@ViewData["UserEmail"]">
+                            <input type="hidden" asp-for="@item.ID" value="@item.ID" />
+                            <input type="hidden" asp-for="@item.ProductID" value="@item.ProductID" />
+                            <input type="number" asp-for="@item.Qty" name="qty" min='1' style='width: 50px' />
+                        </form>
+                    </td>
+                    @{decimal price = @item.Product.Price * @item.Qty; totalPrice += price;}
+
+                    <td class='text-center'>@price $</td>
+                    <td class='text-center'><a type="submit" asp-action="DeleteOrderItem" asp-controller="OrderItem" asp-route-userID="@item.UserID" asp-route-email="@ViewData["UserEmail"]" asp-route-id="@item.ID" class='btn btn-outline-danger'>Delete</a></td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+                <td class='text-center'><strong>Total: </strong></td>
+                <td class='text-center'><strong>@totalPrice $ </strong></td>
+                <td></td>
+            </tr>
+        </table>
+        <br>
+        <div>
+            <a asp-action="ViewCatalog" asp-controller="Product" asp-route-userID="@ViewData["UserID"]" asp-route-userEmail="@ViewData["UserEmail"]" class="pull-right btn btn-info">Back to catalog</a>
+            <a asp-action="CreateOrder" asp-controller="Order" asp-route-userID="@ViewData["UserID"]" asp-route-email="@ViewData["UserEmail"]" role="button" class="btn btn-outline-success">Pre-order</a>
+        </div>
+        @**@
+    </div>
+}
+else
+{
+    <h1 class="text-center">Your cart is empty</h1>
+    <br /><a asp-action="ViewCatalog" asp-controller="Product" asp-route-userID="@ViewData["UserID"]" asp-route-userEmail="@ViewData["UserEmail"]" class="pull-right btn btn-info">Back to catalog</a>
+}
+
+
+

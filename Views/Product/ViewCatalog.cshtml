@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.Product>
+@inject BuildingStore.Models.Repositories.IRepository<Category> cats
+
+<h3>Hello, @ViewData["UserEmail"]</h3>
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-dark mr-2" role="button" asp-action="ViewOrderItems" asp-controller="OrderItem" asp-route-userID="@ViewData["UserID"]" asp-route-email="@ViewData["UserEmail"]">Cart</a>
+    <a class="btn btn-outline-dark" role="button" asp-action="Logout" asp-controller="Account">Logout</a>
+</div>
+
+<div class="text-center">
+    <h1 class="display-4">Catalog</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <br /><br />
+        <div class="col-md-2">
+            <p class="lead"><strong>Categories</strong></p>
+            <div class="list-group" id="myList" role="tablist">
+                <a class="list-group-item list-group-item-action" role="tab" asp-controller="Product" asp-action="ViewCatalog" asp-route-id=0 asp-route-userID="@ViewData["UserID"]" asp-route-userEmail="@ViewData["UserEmail"]">All</a>
+                @foreach (var item in cats.GetList())
+                {
+                    <a class="list-group-item list-group-item-action" role="tab" asp-controller="Product" asp-action="ViewCatalog" asp-route-id="@item.ID" asp-route-userID="@ViewData["UserID"]" asp-route-userEmail="@ViewData["UserEmail"]">@item.Name</a>
+                }
+            </div>
+        </div>
+
+        @if (Model.Count() != 0)
+        {
+            <div class="col-md-10">
+                <br /><br />
+                <div class="row">
+                    @foreach (Product product in Model)
+                    {
+                        <div class="col-sm-4 col-lg-4 col-md-4">
+                            <div class="thumbnail" style="height: 460px; position: relative;">
+                                <div class="card">
+                                    <a asp-action="ProductDetails" asp-controller="Product" asp-route-id="@product.ID" asp-route-userID="@ViewData["UserID"]" asp-route-email="@ViewData["UserEmail"]"><img src="~/images/@product.Image" class="img-thumbnail" style="width:100%; height: 250px;" asp-append-version="true" /></a>
+                                    <div class="card-body text-center">
+                                        <h4>@product.Name</h4>
+                                        <p>Category : <strong>@product.Category.Name</strong></p>
+                                        <h3 class="lead">@product.Price $</h3>
+                                        <div>
+                                            <a asp-action="ViewOrderItems" asp-controller="OrderItem" asp-route-id="@product.ID" asp-route-userID="@ViewData["UserID"]" asp-route-email="@ViewData["UserEmail"]" class="btn btn-danger">Add to cart</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="text-center col-md-10">
+                <br /><br /><br /><br /><br />
+                <h3>There are no products in this category yet</h3>
+            </div>
+        }
+
+    </div>
+</div>
+
+@*@section Scripts {
+    <script>
+        $('#myList a').on('click', function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
+       
+    </script>
+}*@

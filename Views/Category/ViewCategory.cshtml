@@ -1,0 +1,53 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.Category>
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-dark" role="button" asp-action="Logout" asp-controller="Account">Logout</a>
+</div>
+
+<h2 class="text-center">@ViewData["Title"]</h2> <br />
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item" aria-current="page">Categories</li>
+        <li class="breadcrumb-item"><a asp-controller="Product" asp-action="ViewProducts">Products</a></li>
+        <li class="breadcrumb-item"><a asp-controller="OrderDetail" asp-action="ViewOrderDetails">Orders</a></li>
+        <li class="breadcrumb-item"><a asp-controller="User" asp-action="ViewUsers">Users</a></li>
+    </ol>
+</nav>
+
+<h3>Categories</h3>
+
+<blockquote class="blockquote text-center">
+    <table class="table table-bordered table-hover table-sm">
+        <caption>List of categories of products</caption>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.Name</td>
+                    <td>
+                        <a asp-controller="Category" asp-action="EditCategory" asp-route-id="@item.ID">Update</a>    |
+                        <a asp-controller="Category" asp-action="DeleteCategory" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</blockquote>
+
+<div>
+    <p>
+        <a class="btn btn-outline-info" role="button" asp-controller="Category" asp-action="CreateCategory">Add category</a>
+    </p>
+</div>

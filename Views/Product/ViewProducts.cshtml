@@ -1,0 +1,65 @@
+﻿@model IEnumerable<BuildingStore.Models.Entity.Product>
+
+@{
+    ViewData["Title"] = "Admin page";
+}
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-dark" role="button" asp-action="Logout" asp-controller="Account">Logout</a>
+</div>
+
+<h2 class="text-center">@ViewData["Title"]</h2><br />
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-controller="Category" asp-action="ViewCategory">Categories</a></li>
+        <li class="breadcrumb-item" aria-current="page">Products</li>
+        <li class="breadcrumb-item"><a asp-controller="OrderDetail" asp-action="ViewOrderDetails">Orders</a></li>
+        <li class="breadcrumb-item"><a asp-controller="User" asp-action="ViewUsers">Users</a></li>
+    </ol>
+</nav>
+
+<blockquote class="blockquote text-center">
+    <table class="table table-bordered table-hover table-sm">
+        <caption>List of products</caption>
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Category</th>
+                <th scope="col">Name</th>
+                <th scope="col">Image</th>
+                <th scope="col">Price($)</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ID</td>
+                    <td>@item.Category.Name</td>
+                    <td>@item.Name</td>
+                    <td>
+                        @if (item.Image != null)
+                        {
+                        <img src="~/images/@item.Image" class="img-thumbnail" height="100" width="100" asp-append-version="true" />
+                        }
+                    </td>
+                    <td>@item.Price</td>
+                    <td>@item.Description</td>
+                    <td>
+                        <a asp-controller="Product" asp-action="EditProduct" asp-route-id="@item.ID">Update</a>    |
+                        <a asp-controller="Product" asp-action="DeleteProduct" asp-route-id="@item.ID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</blockquote>
+
+<div>
+    <p>
+        <a class="btn btn-outline-info" role="button" asp-controller="Product" asp-action="CreateProduct">Add product</a>
+    </p>
+</div>

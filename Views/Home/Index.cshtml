@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-dark mr-2" role="button" asp-action="Login" asp-controller="Account">Login</a>
+    <a class="btn btn-outline-dark" role="button" asp-action="Register" asp-controller="Account">Register</a>
+</div>
+
+<br />
+<div class="card text-center">
+    
+    <div class="card-header">
+        <h1 class="display-4">Welcome at online store</h1>
+        <h1 class="display-3">"Bella Floors"</h1>
+    </div>
+    <br /><br /><br />
+    <div class="card-body">
+        <h3>Please, <a asp-action="Login" asp-controller="Account">LOGIN</a> or <a asp-action="Register" asp-controller="Account">REGISTER</a> for ordering items</h3>
+        <br /><br /><br />
+    </div>
+</div>
